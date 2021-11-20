@@ -4,14 +4,18 @@ const onClickAdd = () => {
   // 入力内容を取得し、クリアする
   const inputText = document.getElementById("new-task").value;
   document.getElementById("new-task").value = "";
+  createIncompleteList(inputText);
+};
 
+//未完了タスク追加機能
+const createIncompleteList = (text) => {
   //divを生成する
   const div = document.createElement("div");
   div.className = "list-row";
 
   //liタグを生成
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = text;
 
   //未完了のタスクに追加する
   document.getElementById("incomplete-list").appendChild(div);
@@ -42,29 +46,20 @@ const onClickAdd = () => {
     document.getElementById("complete-list").appendChild(incompleteTask);
 
     backBtn.addEventListener("click", () => {
+      //戻すボタンを押されたら、完了タスクから削除する
       const completeTask = backBtn.parentNode;
-      //div以下を初期化
-      const completeText = completeTask.firstElementChild.innerText;
-      completeTask.textContent = null;
+      document.getElementById("complete-list").removeChild(completeTask);
 
-      //liタグ生成
-      const li = document.createElement("li");
-      li.innerText = completeText;
-
-      //タスクを未完了リストに追加
-      completeTask.appendChild(li);
-
-      //未完了タスクのbuttonを作成
-      completeTask.appendChild(completeBtn);
-      completeTask.appendChild(deleteBtn);
-
-      document.getElementById("incomplete-list").appendChild(div);
+      //タスクの内容を取得
+      const incompleteText = incompleteTask.firstElementChild.innerText;
+      createIncompleteList(incompleteText);
     });
   });
 
   //削除ボタンを追加
   const deleteBtn = document.createElement("button");
   deleteBtn.innerText = "削除";
+  //削除ボタンでタスクを削除
   deleteBtn.addEventListener("click", () => {
     const deleteTask = deleteBtn.parentNode;
     document.getElementById("incomplete-list").removeChild(deleteTask);
@@ -74,11 +69,6 @@ const onClickAdd = () => {
   div.appendChild(li);
   div.appendChild(completeBtn);
   div.appendChild(deleteBtn);
-};
-
-const onClickDone = () => {
-  //未完了タスクを取得し、クリアする
-  document.get;
 };
 
 document
